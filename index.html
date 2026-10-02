@@ -27,9 +27,9 @@ html{height:100%}
 body{margin:0;min-height:100%;background:radial-gradient(1200px 700px at 50% -10%,var(--bg2),var(--bg));color:var(--ink);font-family:var(--body);font-size:18px;line-height:1.45;overflow-x:hidden}
 button{font:inherit;color:inherit}
 :focus-visible{outline:3px solid var(--gold);outline-offset:3px}
-.app{max-width:980px;margin:0 auto;padding:20px 20px 28px;min-height:100vh;display:flex;flex-direction:column}
-header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}
-.logo{font-family:var(--display);font-weight:800;font-size:clamp(26px,4vw,38px);letter-spacing:-.02em;display:flex;align-items:center;gap:10px;margin:0}
+.app{max-width:1000px;margin:0 auto;padding:16px 20px 20px;min-height:100vh;display:flex;flex-direction:column}
+header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:8px}
+.logo{font-family:var(--display);font-weight:800;font-size:clamp(24px,3.6vw,34px);letter-spacing:-.02em;display:flex;align-items:center;gap:10px;margin:0}
 .logo .heart{display:inline-grid;place-items:center;width:1.3em;height:1.3em;border-radius:50%;background:var(--accent);color:#fff;font-size:.75em}
 .tally{display:flex;gap:10px;font-weight:700}
 .chip{padding:6px 14px;border-radius:999px;border:1px solid var(--line);background:var(--card);font-size:16px}
@@ -44,36 +44,46 @@ main{flex:1;display:flex;flex-direction:column;align-items:center;justify-conten
 .btn{border:0;border-radius:999px;padding:16px 38px;font-weight:700;font-size:20px;cursor:pointer;background:var(--accent);color:var(--accent-ink);box-shadow:0 10px 24px rgba(232,51,109,.35);transition:transform .12s}
 .btn:active{transform:scale(.97)}
 
-/* cards: full-bleed photo, text over a gradient */
-.stage{position:relative;width:min(560px,100%);height:min(70vh,660px);min-height:480px}
-.card{position:absolute;inset:0;background:#2a1033;border-radius:28px;box-shadow:var(--shadow);overflow:hidden;transition:transform .45s cubic-bezier(.3,.7,.3,1),opacity .45s}
-.card.behind{transform:scale(.95) translateY(16px);opacity:.7;z-index:0;pointer-events:none}
+/* wide card: whole photo on the left, profile on the right */
+.stage{position:relative;width:min(920px,100%);height:clamp(440px,calc(100vh - 290px),660px)}
+.card{position:absolute;inset:0;background:var(--card);border-radius:28px;box-shadow:var(--shadow);overflow:hidden;border:1px solid var(--line);display:grid;grid-template-columns:auto 1fr;transition:transform .45s cubic-bezier(.3,.7,.3,1),opacity .45s}
+.card.behind{transform:scale(.96) translateY(14px);opacity:.7;z-index:0;pointer-events:none}
 .card.top{z-index:2}
-.card.out-r{transform:translateX(130%) rotate(18deg);opacity:0}
-.card.out-l{transform:translateX(-130%) rotate(-18deg);opacity:0}
+.card.out-r{transform:translateX(130%) rotate(14deg);opacity:0}
+.card.out-l{transform:translateX(-130%) rotate(-14deg);opacity:0}
 .card.shake{animation:shake .5s}
-@keyframes shake{20%{transform:translateX(-18px) rotate(-3deg)}40%{transform:translateX(18px) rotate(3deg)}60%{transform:translateX(-12px)}80%{transform:translateX(12px)}}
-.photo{position:absolute;inset:0;background:linear-gradient(135deg,#f093fb,#f5576c);display:grid;place-items:center;font-size:120px}
-.photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 22%}
-.shade{position:absolute;left:0;right:0;bottom:0;height:58%;background:linear-gradient(to top,rgba(14,3,24,.94) 0%,rgba(14,3,24,.78) 45%,rgba(14,3,24,0) 100%)}
-.info{position:absolute;left:0;right:0;bottom:0;padding:18px 22px 20px;color:#fff;display:flex;flex-direction:column;gap:6px}
-.name{font-family:var(--display);font-weight:800;font-size:clamp(28px,4.4vw,38px);line-height:1.05;letter-spacing:-.02em;margin:0}
-.name span{font-weight:500;opacity:.8}
-.job{font-weight:700;font-size:17px;margin:0;opacity:.95}
-.bio{margin:2px 0 4px;font-size:clamp(16px,2vw,19px);opacity:.92}
-.flags{display:flex;gap:8px;flex-wrap:wrap}
-.flag{font-size:14px;padding:5px 11px;border-radius:12px;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.28);backdrop-filter:blur(4px)}
+@keyframes shake{20%{transform:translateX(-18px) rotate(-2deg)}40%{transform:translateX(18px) rotate(2deg)}60%{transform:translateX(-12px)}80%{transform:translateX(12px)}}
+.photo{position:relative;height:100%;aspect-ratio:3/5;background:linear-gradient(135deg,#f093fb,#f5576c);display:grid;place-items:center;font-size:100px}
+.photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top}
+.info{padding:clamp(14px,2.6vh,26px) clamp(18px,2.8vw,30px);display:flex;flex-direction:column;gap:clamp(6px,1.2vh,12px);overflow:auto;min-width:0}
+.name{font-family:var(--display);font-weight:800;font-size:clamp(28px,5vh,42px);line-height:1.05;letter-spacing:-.02em;margin:0}
+.name span{font-weight:500;color:var(--muted)}
+.job{font-weight:700;font-size:clamp(15px,2.3vh,18px);margin:0;color:var(--accent)}
+.bio{margin:0;font-size:clamp(14px,2.3vh,18px)}
+.prompt{border-left:4px solid var(--accent);padding:2px 0 2px 12px}
+.prompt small{display:block;color:var(--muted);font-size:clamp(12px,1.8vh,14px)}
+.prompt p{margin:2px 0 0;font-weight:700;font-size:clamp(14px,2.3vh,18px)}
+.flags{list-style:none;margin:auto 0 0;padding:0;display:flex;flex-direction:column;gap:clamp(4px,.8vh,7px)}
+.flags li{font-size:clamp(13px,2vh,16px);padding:clamp(4px,.9vh,7px) 12px;border-radius:12px;border:1px solid var(--line)}
+.flags li.r{border-color:var(--pass);background:rgba(209,52,74,.08)}
+.flags li.g{border-color:var(--like);background:rgba(20,165,108,.08)}
 .stamp{position:absolute;top:22px;font-family:var(--display);font-weight:800;font-size:34px;border:4px solid;border-radius:12px;padding:2px 14px;opacity:0;z-index:3}
-.stamp.like{right:20px;color:var(--like);border-color:var(--like);transform:rotate(12deg);background:rgba(255,255,255,.9)}
-.stamp.nope{left:20px;color:var(--pass);border-color:var(--pass);transform:rotate(-12deg);background:rgba(255,255,255,.9)}
-.actions{display:flex;gap:28px;margin-top:20px;align-items:center}
-.round{width:84px;height:84px;border-radius:50%;font-size:38px;cursor:pointer;display:grid;place-items:center;background:var(--card);box-shadow:var(--shadow);transition:transform .12s;border:2px solid var(--line)}
+.stamp.like{right:22px;color:var(--like);border-color:var(--like);transform:rotate(12deg);background:rgba(255,255,255,.92)}
+.stamp.nope{left:22px;color:var(--pass);border-color:var(--pass);transform:rotate(-12deg);background:rgba(255,255,255,.92)}
+.actions{display:flex;gap:28px;margin-top:clamp(10px,2vh,20px);align-items:center}
+.round{width:clamp(64px,10vh,84px);aspect-ratio:1;border-radius:50%;font-size:clamp(28px,4.4vh,38px);cursor:pointer;display:grid;place-items:center;background:var(--card);box-shadow:var(--shadow);transition:transform .12s;border:2px solid var(--line)}
 .round:active{transform:scale(.92)}
-.round.n{color:var(--pass)} .round.y{color:var(--like);width:96px;height:96px;font-size:44px}
-.hint{margin-top:12px;color:var(--muted);font-size:15px}
-.toast{min-height:56px;margin-top:10px;text-align:center;max-width:680px}
-.toast .l1{font-family:var(--display);font-weight:500;font-size:clamp(18px,2.6vw,24px)}
-.toast .l2{color:var(--accent);font-weight:700;font-size:clamp(16px,2.2vw,20px)}
+.round.n{color:var(--pass)} .round.y{color:var(--like);width:clamp(72px,11.5vh,96px);font-size:clamp(32px,5vh,44px)}
+.hint{margin-top:8px;color:var(--muted);font-size:14px}
+.toast{min-height:48px;margin-top:8px;text-align:center;max-width:680px}
+.toast .l1{font-family:var(--display);font-weight:500;font-size:clamp(17px,2.6vh,24px)}
+.toast .l2{color:var(--accent);font-weight:700;font-size:clamp(15px,2.2vh,20px)}
+
+@media (max-width:720px){
+  .stage{width:min(440px,100%);height:clamp(520px,calc(100vh - 270px),720px)}
+  .card{grid-template-columns:1fr;grid-template-rows:46% 1fr}
+  .photo{aspect-ratio:auto;width:100%;height:100%}
+}
 
 /* fake notification */
 .notif{position:fixed;left:50%;top:14px;transform:translate(-50%,-160%);width:min(520px,calc(100% - 24px));z-index:60;background:var(--card);border:1px solid var(--line);border-radius:22px;box-shadow:var(--shadow);padding:14px 16px;display:flex;gap:14px;align-items:center;transition:transform .5s cubic-bezier(.2,.9,.3,1.2)}
@@ -88,7 +98,7 @@ main{flex:1;display:flex;flex-direction:column;align-items:center;justify-conten
 .match{text-align:center}
 .match h2{font-family:var(--display);font-weight:800;font-size:clamp(48px,10vw,110px);line-height:.95;letter-spacing:-.04em;margin:0 0 14px;color:var(--accent)}
 .faces{display:flex;justify-content:center;align-items:center;margin:8px 0 14px}
-.face{width:min(210px,36vw);aspect-ratio:1;border-radius:50%;border:6px solid var(--accent);background:linear-gradient(135deg,#f093fb,#f5576c);display:grid;place-items:center;font-size:72px;overflow:hidden;position:relative;flex:none}
+.face{width:min(230px,38vw);aspect-ratio:1;border-radius:50%;border:6px solid var(--accent);background:linear-gradient(135deg,#f093fb,#f5576c);display:grid;place-items:center;font-size:72px;overflow:hidden;position:relative;flex:none}
 .face img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 20%}
 .face + .face{margin-left:-28px}
 .face.b{background:linear-gradient(135deg,#89f7fe,#66a6ff)}
@@ -155,75 +165,101 @@ main{flex:1;display:flex;flex-direction:column;align-items:center;justify-conten
 /* =====================================================================
    EDIT THIS SECTION ONLY
    - Photos live in the "images" folder next to this file.
+   - For each profile: reds = red flags (list), greens = green flags (list),
+     ask = the dating app prompt, answer = their answer.
    - "real" is the guest's real name, shown after each swipe.
-     To turn the reveal off, set showReveal to false.
+     To turn that reveal off, set showReveal to false.
    - Profiles appear in this exact order, then the finale card.
    ===================================================================== */
 var CONFIG = {
   appName: "Last Swipe",
   brideName: "Regina",
-  bridePhoto: "",              // optional: her real photo, e.g. "images/regina.jpg"
   showReveal: true,
   shuffle: false,
 
   profiles: [
     { name: "Devin", age: "37", job: "Press Secretary, mega Chinese company",
-      bio: "Speaks a lot of languages and can sweet talk you in every single one.",
-      green: "Can sweet talk anyone", red: "Can sweet talk anyone",
+      bio: "I speak more languages than I have commitments. Every sentence I say sounds like a promise, and none of them are.",
+      ask: "I know I am a catch because", answer: "I can apologize beautifully in every language. I have had a lot of practice.",
+      reds: ["Sweet talks literally everyone, including your mom and the waiter", "Has a different version of every story for every audience", "Says 'let me circle back' about your feelings"],
+      greens: ["Always knows what to say"],
       real: "Deborah", photo: "images/devin.jpg" },
 
     { name: "Grant", age: "40", job: "CEO of a successful start up",
-      bio: "Married to my job. Very ambitious, zero personal life. Not looking for commitment.",
-      green: "Ambitious", red: "No time for anyone",
+      bio: "Married to my job. My calendar is booked six months out, but sure, let's grab coffee. Fifteen minutes. Between meetings.",
+      ask: "The way to my heart is", answer: "A Slack message before 7am with a clear agenda.",
+      reds: ["No time for anyone, including you", "Not looking for commitment, calls it 'a pivot'", "Will cancel dinner for a 'quick sync'"],
+      greens: ["Super ambitious"],
       real: "Gracila", photo: "images/grant.jpg" },
 
     { name: "Jeffrey", age: "38", job: "Plastic Surgeon",
-      bio: "Very critical of looks. I will always find something to fix.",
-      green: "Great eye for detail", red: "Always finds something to fix",
+      bio: "I notice everything. Yes, that too. I can see what you want fixed before you even know it.",
+      ask: "On a first date I usually", answer: "Tilt my head and say 'honestly, with just a small tweak...'",
+      reds: ["Always finds something to fix", "Judges your face before your personality", "Offers a free consultation on date two"],
+      greens: ["Great eye for detail"],
       real: "Jennifer", photo: "images/jeffrey.jpg" },
 
     { name: "Gary", age: "35", job: "DJ",
-      bio: "Works late, awake all night, and always on the socials. Can be a little flirty.",
-      green: "Fun at parties", red: "Flirty, always online at 3am",
+      bio: "I sleep when the sun is up and text you when the moon is out. I have twelve conversations going, but you are definitely top three.",
+      ask: "My most controversial opinion", answer: "Dinner starts at 11pm. Replies take until 4am.",
+      reds: ["Awake all night, unreachable all day", "Flirty with the entire guest list", "Posts a story every 20 minutes to keep up with socials"],
+      greens: ["Can get you into any club"],
       real: "Gabby", photo: "images/gary.jpg" },
 
     { name: "Novanto", age: "36", job: "Model and actor",
-      bio: "Stars in sinetron. In the entertainment industry, so I meet a lot of girls.",
-      green: "Famous on TV", red: "No stable income, meets a lot of girls",
+      bio: "Stars in sinetron, so yes, you have seen me cry on TV at 8pm. I work with beautiful people all day, but my heart is open.",
+      ask: "I am weirdly good at", answer: "Crying on cue. Also leaving the set with new phone numbers.",
+      reds: ["No stable income, huge dreams", "Meets a lot of girls on set", "Stays in character at dinner"],
+      greens: ["Has a really great headshot"],
       real: "Novela", photo: "images/novanto.jpg" },
 
     { name: "Marko", age: "38", job: "Hyrox Instructor",
-      bio: "Still unsure of my future. Very health conscious and loves a good topless selfie.",
-      green: "Very health conscious", red: "Topless selfies, unsure of his future",
+      bio: "Still figuring out my future, but my abs already know theirs. Very health conscious, and very conscious of lighting.",
+      ask: "A shower thought I had recently", answer: "Should I post this shirtless, or shirtless with a towel?",
+      reds: ["Topless selfie every single day", "Still unsure what he wants to do with his life", "Will count your macros on the first date"],
+      greens: ["Very health conscious"],
       real: "Mila", photo: "images/marko.jpg" },
 
     { name: "Patrick", age: "36", job: "Works at KPMG (Kantor Papi Mami Gue)",
-      bio: "Does not work, no ambition. My parents are very uptight. You must give me a son immediately.",
-      green: "Free all day", red: "Needs a son immediately, uptight parents",
+      bio: "I work at my parents' office, which means I do not really work. Looking for a girl who can start a family soon. A son, specifically.",
+      ask: "Marriage to me means", answer: "A son in year one. Mom already picked the name.",
+      reds: ["Does not work and has no plans to", "Needs a son immediately", "Parents approve every outfit, every sentence, and your zodiac"],
+      greens: ["Dinner is always on his parents"],
       real: "Patricia", photo: "images/patrick.jpg" },
 
     { name: "Fredy", age: "38", job: "Yoga Instructor",
-      bio: "Vegetarian, peace loving, Buddhist. Lives humbly and flies to Bali every month.",
-      green: "Peace and love", red: "Zero ambition",
+      bio: "Vegetarian, Buddhist, and at peace with having no plan. My yoga mat is my office. Rent is a state of mind.",
+      ask: "Together we could", answer: "Meditate on why we have no savings. Then fly to Bali.",
+      reds: ["Zero ambition", "Disappears to Bali every single month", "Calls unpaid bills 'attachment'"],
+      greens: ["Never raises his voice"],
       real: "Frisca", photo: "images/fredy.jpg" },
 
     { name: "Samuel", age: "37", job: "AI Data Center Specialist",
-      bio: "Big nerd and a huge introvert. No friends, plays computer 24/7.",
-      green: "Great with tech", red: "Has a virtual girlfriend",
+      bio: "Big nerd. Huge introvert. My friends are in my games. I have 400 hours on one save file.",
+      ask: "My ideal Sunday", answer: "Not leaving the house. Not talking to anyone. Not seeing sunlight.",
+      reds: ["Has a virtual girlfriend (she is very sweet)", "Plays computer 24/7", "No friends, so the wedding guest list is one"],
+      greens: ["Will build you a custom PC"],
       real: "Selly", photo: "images/samuel.jpg" },
 
     { name: "Gavin", age: "35", job: "Night Club Owner",
-      bio: "I own the night. Whiskey, VIP tables, and a very busy schedule.",
-      green: "VIP table for you", red: "Married",
+      bio: "I own the night. Bottle service for everyone, commitment for no one. The ring comes off when the club opens, it is a safety thing.",
+      ask: "Two truths and a lie", answer: "I am single. I am on the guest list. I am home by midnight.",
+      reds: ["Married", "Takes the ring off when the club opens", "Always 'working late' at the club"],
+      greens: ["Always has a VIP table"],
       real: "Gita", photo: "images/gavin.jpg" }
   ],
 
   // The very last card: Regina's male version.
   finale: {
     name: "Reynold", age: "38", job: "Professional Chef",
-    bio: "Loves kids and cooks like a dream. Basically all green flags.",
-    green: "Basically all green flags", red: "None found",
-    photo: "images/reynold.jpg"
+    bio: "I love kids, and I cook dinner for fun. I show up on time, call when I say I will, and remember your coffee order.",
+    ask: "I am weirdly good at", answer: "Knowing exactly what you want for dinner before you do.",
+    reds: [],
+    greens: ["Loves kids", "Cooks for you every night", "Remembers every anniversary", "Basically all green flags"],
+    photo: "images/reynold.jpg",
+    // Shown next to Reynold on the final "It's a match!" screen
+    partnerName: "Rondy",
+    partnerPhoto: "images/rondy.jpg"
   }
 };
 /* ===================================================================== */
@@ -233,8 +269,8 @@ var CONFIG = {
   function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
   function pick(a){return a[Math.floor(Math.random()*a.length)]}
 
-  var likeLines=['Match! Hope she likes what she sees.','Right swipe. No notes.','Matched. The group chat is screaming.','A match. Bold choice.','Swiped right. Say something charming.'];
-  var passLines=['Passed. Their loss.','Left swipe. Cold.','Next! The standards are high.','Swiped left. Savage.','Ghosted in under a second.'];
+  var likeLines=['Match! Hope she likes what she sees.','Right swipe. Bold choice.','Matched. The group chat is screaming.','A match. Read the red flags first.','Swiped right. Say something charming.'];
+  var passLines=['Passed. Smart move.','Left swipe. Dodged a bullet.','Next! The standards are high.','Swiped left. Savage.','Ghosted in under a second.'];
 
   var appName=CONFIG.appName||'Last Swipe';
   var bride=CONFIG.brideName||'';
@@ -257,13 +293,14 @@ var CONFIG = {
   function cardHTML(p){
     var photo=p.photo?'<img src="'+esc(p.photo)+'" alt="" data-fallback="1">':'<span aria-hidden="true">🙂</span>';
     var flags='';
-    if(p.green)flags+='<span class="flag">🟢 '+esc(p.green)+'</span>';
-    if(p.red)flags+='<span class="flag">🚩 '+esc(p.red)+'</span>';
-    return '<div class="photo">'+photo+'</div><div class="shade"></div>'+
+    (p.reds||[]).forEach(function(t){flags+='<li class="r">🚩 '+esc(t)+'</li>'});
+    (p.greens||[]).forEach(function(t){flags+='<li class="g">🟢 '+esc(t)+'</li>'});
+    return '<div class="photo">'+photo+'</div>'+
       '<div class="stamp like">LIKE</div><div class="stamp nope">NOPE</div>'+
       '<div class="info"><h2 class="name">'+esc(p.name)+(p.age?' <span>'+esc(p.age)+'</span>':'')+'</h2>'+
       (p.job?'<p class="job">'+esc(p.job)+'</p>':'')+(p.bio?'<p class="bio">'+esc(p.bio)+'</p>':'')+
-      '<div class="flags">'+flags+'</div></div>';
+      (p.ask?'<div class="prompt"><small>'+esc(p.ask)+'</small><p>'+esc(p.answer)+'</p></div>':'')+
+      '<ul class="flags">'+flags+'</ul></div>';
   }
   function fixBrokenImages(root){
     var imgs=root.querySelectorAll('img[data-fallback]');
@@ -321,9 +358,10 @@ var CONFIG = {
   function finish(){
     finished=true;
     $('notif').classList.remove('show');
-    $('faces').innerHTML=face(CONFIG.bridePhoto,'👰','a')+'<div class="mid" aria-hidden="true">♥</div>'+face(F.photo,'🤵','b');
+    $('faces').innerHTML=face(F.partnerPhoto,'👰','a')+'<div class="mid" aria-hidden="true">♥</div>'+face(F.photo,'🤵','b');
     fixBrokenImages($('faces'));
-    $('endText').textContent=(bride||'The bride')+' and '+(F.name||'Reynold')+' are a perfect match. No more swiping, ever.';
+    var a=F.partnerName||'Rondy', b=F.name||'Reynold';
+    $('endText').textContent=b+' and '+a+' are a perfect match. No more swiping, ever.';
     $('uninstallText').textContent='Deleting dating apps...';
     $('barFill').style.width='0';
     show('end');confetti();
@@ -334,9 +372,10 @@ var CONFIG = {
   function begin(){
     var arr=guests.slice();
     if(CONFIG.shuffle){for(var i=arr.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=arr[i];arr[i]=arr[j];arr[j]=t}}
-    deck=arr.map(function(p){return {name:p.name,age:p.age,job:p.job,bio:p.bio,green:p.green,red:p.red,photo:p.photo,real:p.real}});
-    deck.push({finale:true,name:F.name,age:F.age,job:F.job,bio:F.bio,green:F.green,red:F.red,photo:F.photo});
+    deck=arr.slice();
+    deck.push({finale:true,name:F.name,age:F.age,job:F.job,bio:F.bio,ask:F.ask,answer:F.answer,reds:F.reds,greens:F.greens,photo:F.photo});
     deck.forEach(function(p){if(p.photo){var im=new Image();im.src=p.photo}});
+    if(F.partnerPhoto){var pi=new Image();pi.src=F.partnerPhoto}
     idx=0;likes=0;passes=0;busy=false;finished=false;counts();setToast('','');
     show('play');render();
   }
