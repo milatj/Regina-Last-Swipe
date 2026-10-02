@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Regina's Last Swipe</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#fff0f4; --bg2:#ffd9e4; --ink:#2a1033; --muted:#6d5577; --card:#ffffff;
+  --accent:#e8336d; --accent-ink:#ffffff; --like:#14a56c; --pass:#d1344a; --gold:#f2b84b;
+  --line:rgba(42,16,51,.14); --shadow:0 24px 60px rgba(120,20,70,.28);
+  --display:'Bricolage Grotesque','Trebuchet MS',system-ui,sans-serif;
+  --body:'DM Sans',system-ui,-apple-system,'Segoe UI',sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --bg:#1d0a26; --bg2:#34113f; --ink:#fff0f6; --muted:#c9a9d4; --card:#2d1239;
+    --line:rgba(255,240,246,.16); --shadow:0 24px 60px rgba(0,0,0,.55);
+  }
+}
+*{box-sizing:border-box}
+html{height:100%}
+body{margin:0;min-height:100%;background:radial-gradient(1200px 700px at 50% -10%,var(--bg2),var(--bg));color:var(--ink);font-family:var(--body);font-size:18px;line-height:1.45;overflow-x:hidden}
+button{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
+.app{max-width:980px;margin:0 auto;padding:20px 20px 28px;min-height:100vh;display:flex;flex-direction:column}
+header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}
+.logo{font-family:var(--display);font-weight:800;font-size:clamp(26px,4vw,38px);letter-spacing:-.02em;display:flex;align-items:center;gap:10px;margin:0}
+.logo .heart{display:inline-grid;place-items:center;width:1.3em;height:1.3em;border-radius:50%;background:var(--accent);color:#fff;font-size:.75em}
+.tally{display:flex;gap:10px;font-weight:700}
+.chip{padding:6px 14px;border-radius:999px;border:1px solid var(--line);background:var(--card);font-size:16px}
+.chip.l{color:var(--like)} .chip.p{color:var(--pass)}
+main{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.screen{width:100%;display:none;flex-direction:column;align-items:center}
+.screen.on{display:flex}
+
+.hero{text-align:center;max-width:760px;margin:10px auto 26px}
+.hero h2{font-family:var(--display);font-weight:800;font-size:clamp(38px,8vw,78px);line-height:1;letter-spacing:-.035em;margin:0 0 14px}
+.hero p{color:var(--muted);font-size:clamp(17px,2.2vw,22px);margin:0}
+.btn{border:0;border-radius:999px;padding:16px 38px;font-weight:700;font-size:20px;cursor:pointer;background:var(--accent);color:var(--accent-ink);box-shadow:0 10px 24px rgba(232,51,109,.35);transition:transform .12s}
+.btn:active{transform:scale(.97)}
+
+/* cards: full-bleed photo, text over a gradient */
+.stage{position:relative;width:min(560px,100%);height:min(70vh,660px);min-height:480px}
+.card{position:absolute;inset:0;background:#2a1033;border-radius:28px;box-shadow:var(--shadow);overflow:hidden;transition:transform .45s cubic-bezier(.3,.7,.3,1),opacity .45s}
+.card.behind{transform:scale(.95) translateY(16px);opacity:.7;z-index:0;pointer-events:none}
+.card.top{z-index:2}
+.card.out-r{transform:translateX(130%) rotate(18deg);opacity:0}
+.card.out-l{transform:translateX(-130%) rotate(-18deg);opacity:0}
+.card.shake{animation:shake .5s}
+@keyframes shake{20%{transform:translateX(-18px) rotate(-3deg)}40%{transform:translateX(18px) rotate(3deg)}60%{transform:translateX(-12px)}80%{transform:translateX(12px)}}
+.photo{position:absolute;inset:0;background:linear-gradient(135deg,#f093fb,#f5576c);display:grid;place-items:center;font-size:120px}
+.photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 22%}
+.shade{position:absolute;left:0;right:0;bottom:0;height:58%;background:linear-gradient(to top,rgba(14,3,24,.94) 0%,rgba(14,3,24,.78) 45%,rgba(14,3,24,0) 100%)}
+.info{position:absolute;left:0;right:0;bottom:0;padding:18px 22px 20px;color:#fff;display:flex;flex-direction:column;gap:6px}
+.name{font-family:var(--display);font-weight:800;font-size:clamp(28px,4.4vw,38px);line-height:1.05;letter-spacing:-.02em;margin:0}
+.name span{font-weight:500;opacity:.8}
+.job{font-weight:700;font-size:17px;margin:0;opacity:.95}
+.bio{margin:2px 0 4px;font-size:clamp(16px,2vw,19px);opacity:.92}
+.flags{display:flex;gap:8px;flex-wrap:wrap}
+.flag{font-size:14px;padding:5px 11px;border-radius:12px;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.28);backdrop-filter:blur(4px)}
+.stamp{position:absolute;top:22px;font-family:var(--display);font-weight:800;font-size:34px;border:4px solid;border-radius:12px;padding:2px 14px;opacity:0;z-index:3}
+.stamp.like{right:20px;color:var(--like);border-color:var(--like);transform:rotate(12deg);background:rgba(255,255,255,.9)}
+.stamp.nope{left:20px;color:var(--pass);border-color:var(--pass);transform:rotate(-12deg);background:rgba(255,255,255,.9)}
+.actions{display:flex;gap:28px;margin-top:20px;align-items:center}
+.round{width:84px;height:84px;border-radius:50%;font-size:38px;cursor:pointer;display:grid;place-items:center;background:var(--card);box-shadow:var(--shadow);transition:transform .12s;border:2px solid var(--line)}
+.round:active{transform:scale(.92)}
+.round.n{color:var(--pass)} .round.y{color:var(--like);width:96px;height:96px;font-size:44px}
+.hint{margin-top:12px;color:var(--muted);font-size:15px}
+.toast{min-height:56px;margin-top:10px;text-align:center;max-width:680px}
+.toast .l1{font-family:var(--display);font-weight:500;font-size:clamp(18px,2.6vw,24px)}
+.toast .l2{color:var(--accent);font-weight:700;font-size:clamp(16px,2.2vw,20px)}
+
+/* fake notification */
+.notif{position:fixed;left:50%;top:14px;transform:translate(-50%,-160%);width:min(520px,calc(100% - 24px));z-index:60;background:var(--card);border:1px solid var(--line);border-radius:22px;box-shadow:var(--shadow);padding:14px 16px;display:flex;gap:14px;align-items:center;transition:transform .5s cubic-bezier(.2,.9,.3,1.2)}
+.notif.show{transform:translate(-50%,0)}
+.notif .ic{width:48px;height:48px;border-radius:12px;background:var(--accent);color:#fff;display:grid;place-items:center;font-size:26px;flex:none}
+.notif .tx{flex:1;min-width:0}
+.notif .tx b{display:block;font-size:16px}
+.notif .tx span{font-size:16px;color:var(--muted)}
+.notif .when{font-size:13px;color:var(--muted);align-self:flex-start}
+
+/* end */
+.match{text-align:center}
+.match h2{font-family:var(--display);font-weight:800;font-size:clamp(48px,10vw,110px);line-height:.95;letter-spacing:-.04em;margin:0 0 14px;color:var(--accent)}
+.faces{display:flex;justify-content:center;align-items:center;margin:8px 0 14px}
+.face{width:min(210px,36vw);aspect-ratio:1;border-radius:50%;border:6px solid var(--accent);background:linear-gradient(135deg,#f093fb,#f5576c);display:grid;place-items:center;font-size:72px;overflow:hidden;position:relative;flex:none}
+.face img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 20%}
+.face + .face{margin-left:-28px}
+.face.b{background:linear-gradient(135deg,#89f7fe,#66a6ff)}
+.faces .mid{position:relative;z-index:2;margin:0 -22px;width:64px;height:64px;border-radius:50%;background:var(--accent);color:#fff;display:grid;place-items:center;font-size:32px;border:4px solid var(--bg)}
+.match p{font-size:clamp(18px,2.6vw,26px);max-width:660px;margin:0 auto 18px;color:var(--muted)}
+.uninstall{display:inline-block;border:1px solid var(--line);background:var(--card);border-radius:16px;padding:12px 20px;font-weight:700;text-align:left}
+.bar{height:10px;border-radius:999px;background:var(--bg2);overflow:hidden;margin-top:8px;min-width:260px}
+.bar i{display:block;height:100%;width:0;background:var(--accent);transition:width 2.6s ease}
+.fall{position:fixed;top:-60px;font-size:30px;pointer-events:none;z-index:50;animation:fall linear forwards}
+@keyframes fall{to{transform:translateY(115vh) rotate(360deg)}}
+@media (prefers-reduced-motion: reduce){.card,.notif{transition:none}.fall{display:none}.card.shake{animation:none}.bar i{transition:none}}
+</style>
+</head>
+<body>
+<div class="app">
+  <header>
+    <h1 class="logo"><span class="heart" aria-hidden="true">♥</span><span id="appName">Last Swipe</span></h1>
+    <div class="tally" id="tally" hidden>
+      <span class="chip l" id="likeCount">♥ 0</span>
+      <span class="chip p" id="passCount">✕ 0</span>
+    </div>
+  </header>
+
+  <main>
+    <section class="screen on" id="start">
+      <div class="hero">
+        <h2 id="heroTitle">Her last swipe ever</h2>
+        <p>One final round on the dating apps before forever. Swipe right to like, left to pass, and choose wisely.</p>
+      </div>
+      <button class="btn" id="startBtn">Start swiping</button>
+    </section>
+
+    <section class="screen" id="play">
+      <div class="stage" id="stage"></div>
+      <div class="toast" id="toast" aria-live="polite"></div>
+      <div class="actions">
+        <button class="round n" id="noBtn" aria-label="Pass">✕</button>
+        <button class="round y" id="yesBtn" aria-label="Like">♥</button>
+      </div>
+      <div class="hint">Keyboard: left arrow to pass, right arrow to like</div>
+    </section>
+
+    <section class="screen" id="end">
+      <div class="match">
+        <h2>It's a match!</h2>
+        <div class="faces" id="faces"></div>
+        <p id="endText"></p>
+        <div class="uninstall" aria-live="polite">
+          <div id="uninstallText">Deleting dating apps...</div>
+          <div class="bar"><i id="barFill"></i></div>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<div class="notif" id="notif" role="status" aria-live="assertive">
+  <div class="ic" aria-hidden="true">♥</div>
+  <div class="tx"><b id="notifApp">Last Swipe</b><span id="notifText"></span></div>
+  <div class="when">now</div>
+</div>
+
+<script>
+/* =====================================================================
+   EDIT THIS SECTION ONLY
+   - Photos live in the "images" folder next to this file.
+   - "real" is the guest's real name, shown after each swipe.
+     To turn the reveal off, set showReveal to false.
+   - Profiles appear in this exact order, then the finale card.
+   ===================================================================== */
+var CONFIG = {
+  appName: "Last Swipe",
+  brideName: "Regina",
+  bridePhoto: "",              // optional: her real photo, e.g. "images/regina.jpg"
+  showReveal: true,
+  shuffle: false,
+
+  profiles: [
+    { name: "Devin", age: "37", job: "Press Secretary, mega Chinese company",
+      bio: "Speaks a lot of languages and can sweet talk you in every single one.",
+      green: "Can sweet talk anyone", red: "Can sweet talk anyone",
+      real: "Deborah", photo: "images/devin.jpg" },
+
+    { name: "Grant", age: "40", job: "CEO of a successful start up",
+      bio: "Married to my job. Very ambitious, zero personal life. Not looking for commitment.",
+      green: "Ambitious", red: "No time for anyone",
+      real: "Gracila", photo: "images/grant.jpg" },
+
+    { name: "Jeffrey", age: "38", job: "Plastic Surgeon",
+      bio: "Very critical of looks. I will always find something to fix.",
+      green: "Great eye for detail", red: "Always finds something to fix",
+      real: "Jennifer", photo: "images/jeffrey.jpg" },
+
+    { name: "Gary", age: "35", job: "DJ",
+      bio: "Works late, awake all night, and always on the socials. Can be a little flirty.",
+      green: "Fun at parties", red: "Flirty, always online at 3am",
+      real: "Gabby", photo: "images/gary.jpg" },
+
+    { name: "Novanto", age: "36", job: "Model and actor",
+      bio: "Stars in sinetron. In the entertainment industry, so I meet a lot of girls.",
+      green: "Famous on TV", red: "No stable income, meets a lot of girls",
+      real: "Novela", photo: "images/novanto.jpg" },
+
+    { name: "Marko", age: "38", job: "Hyrox Instructor",
+      bio: "Still unsure of my future. Very health conscious and loves a good topless selfie.",
+      green: "Very health conscious", red: "Topless selfies, unsure of his future",
+      real: "Mila", photo: "images/marko.jpg" },
+
+    { name: "Patrick", age: "36", job: "Works at KPMG (Kantor Papi Mami Gue)",
+      bio: "Does not work, no ambition. My parents are very uptight. You must give me a son immediately.",
+      green: "Free all day", red: "Needs a son immediately, uptight parents",
+      real: "Patricia", photo: "images/patrick.jpg" },
+
+    { name: "Fredy", age: "38", job: "Yoga Instructor",
+      bio: "Vegetarian, peace loving, Buddhist. Lives humbly and flies to Bali every month.",
+      green: "Peace and love", red: "Zero ambition",
+      real: "Frisca", photo: "images/fredy.jpg" },
+
+    { name: "Samuel", age: "37", job: "AI Data Center Specialist",
+      bio: "Big nerd and a huge introvert. No friends, plays computer 24/7.",
+      green: "Great with tech", red: "Has a virtual girlfriend",
+      real: "Selly", photo: "images/samuel.jpg" },
+
+    { name: "Gavin", age: "35", job: "Night Club Owner",
+      bio: "I own the night. Whiskey, VIP tables, and a very busy schedule.",
+      green: "VIP table for you", red: "Married",
+      real: "Gita", photo: "images/gavin.jpg" }
+  ],
+
+  // The very last card: Regina's male version.
+  finale: {
+    name: "Reynold", age: "38", job: "Professional Chef",
+    bio: "Loves kids and cooks like a dream. Basically all green flags.",
+    green: "Basically all green flags", red: "None found",
+    photo: "images/reynold.jpg"
+  }
+};
+/* ===================================================================== */
+
+(function(){
+  var $=function(id){return document.getElementById(id)};
+  function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+  function pick(a){return a[Math.floor(Math.random()*a.length)]}
+
+  var likeLines=['Match! Hope she likes what she sees.','Right swipe. No notes.','Matched. The group chat is screaming.','A match. Bold choice.','Swiped right. Say something charming.'];
+  var passLines=['Passed. Their loss.','Left swipe. Cold.','Next! The standards are high.','Swiped left. Savage.','Ghosted in under a second.'];
+
+  var appName=CONFIG.appName||'Last Swipe';
+  var bride=CONFIG.brideName||'';
+  var F=CONFIG.finale||{};
+  var guests=CONFIG.profiles||[];
+
+  document.title=bride?(bride+"'s "+appName):appName;
+  $('appName').textContent=appName;
+  $('notifApp').textContent=appName;
+  $('heroTitle').textContent=bride?(bride+"'s last swipe ever"):'Her last swipe ever';
+
+  var deck=[],idx=0,likes=0,passes=0,busy=false,finished=false;
+
+  function show(id){
+    ['start','play','end'].forEach(function(s){$(s).classList.toggle('on',s===id)});
+    $('tally').hidden=!(id==='play'||id==='end');
+    window.scrollTo(0,0);
+  }
+
+  function cardHTML(p){
+    var photo=p.photo?'<img src="'+esc(p.photo)+'" alt="" data-fallback="1">':'<span aria-hidden="true">🙂</span>';
+    var flags='';
+    if(p.green)flags+='<span class="flag">🟢 '+esc(p.green)+'</span>';
+    if(p.red)flags+='<span class="flag">🚩 '+esc(p.red)+'</span>';
+    return '<div class="photo">'+photo+'</div><div class="shade"></div>'+
+      '<div class="stamp like">LIKE</div><div class="stamp nope">NOPE</div>'+
+      '<div class="info"><h2 class="name">'+esc(p.name)+(p.age?' <span>'+esc(p.age)+'</span>':'')+'</h2>'+
+      (p.job?'<p class="job">'+esc(p.job)+'</p>':'')+(p.bio?'<p class="bio">'+esc(p.bio)+'</p>':'')+
+      '<div class="flags">'+flags+'</div></div>';
+  }
+  function fixBrokenImages(root){
+    var imgs=root.querySelectorAll('img[data-fallback]');
+    for(var i=0;i<imgs.length;i++){imgs[i].addEventListener('error',function(){this.remove()})}
+  }
+  function render(){
+    var stage=$('stage');stage.innerHTML='';
+    if(deck[idx+1]){var b=document.createElement('div');b.className='card behind';b.innerHTML=cardHTML(deck[idx+1]);stage.appendChild(b);fixBrokenImages(b)}
+    var t=document.createElement('div');t.className='card top';t.id='topCard';t.innerHTML=cardHTML(deck[idx]);stage.appendChild(t);fixBrokenImages(t);
+  }
+  function setToast(l1,l2){$('toast').innerHTML='<div class="l1">'+esc(l1||'')+'</div>'+(l2?'<div class="l2">'+esc(l2)+'</div>':'')}
+  function counts(){$('likeCount').textContent='♥ '+likes;$('passCount').textContent='✕ '+passes}
+
+  function confetti(){
+    var em=['💖','💍','🥂','✨','🎉','💐','🤍'];
+    for(var i=0;i<46;i++){
+      var d=document.createElement('div');d.className='fall';d.textContent=em[i%em.length];
+      d.style.left=Math.random()*100+'vw';d.style.animationDuration=(2.4+Math.random()*2.6)+'s';d.style.animationDelay=(Math.random()*1.4)+'s';
+      document.body.appendChild(d);
+      (function(el){setTimeout(function(){el.remove()},8000)})(d);
+    }
+  }
+
+  function swipe(dir){
+    if(busy||finished||!deck[idx])return;
+    var p=deck[idx],top=$('topCard');
+    if(p.finale&&dir==='l'){
+      busy=true;top.classList.add('shake');
+      setToast('Swipe rejected.',"You cannot ghost yourself. This is the last swipe ever.");
+      setTimeout(function(){top.classList.remove('shake');busy=false},520);
+      return;
+    }
+    busy=true;
+    top.querySelector(dir==='r'?'.stamp.like':'.stamp.nope').style.opacity=1;
+    top.classList.add(dir==='r'?'out-r':'out-l');
+    if(dir==='r')likes++;else passes++;
+    counts();
+    if(p.finale){
+      setToast('','');
+      setTimeout(function(){
+        $('notifText').textContent="It's a match! You and "+(p.name||'Reynold')+" liked each other.";
+        $('notif').classList.add('show');
+      },500);
+      setTimeout(finish,3200);
+      return;
+    }
+    setToast(pick(dir==='r'?likeLines:passLines),(CONFIG.showReveal&&p.real)?('That was '+p.real+'!'):'');
+    setTimeout(function(){idx++;busy=false;render()},1200);
+  }
+
+  function face(src,emoji,cls){
+    return '<div class="face '+cls+'">'+(src?'<img src="'+esc(src)+'" alt="" data-fallback="1">':'<span aria-hidden="true">'+emoji+'</span>')+'</div>';
+  }
+
+  function finish(){
+    finished=true;
+    $('notif').classList.remove('show');
+    $('faces').innerHTML=face(CONFIG.bridePhoto,'👰','a')+'<div class="mid" aria-hidden="true">♥</div>'+face(F.photo,'🤵','b');
+    fixBrokenImages($('faces'));
+    $('endText').textContent=(bride||'The bride')+' and '+(F.name||'Reynold')+' are a perfect match. No more swiping, ever.';
+    $('uninstallText').textContent='Deleting dating apps...';
+    $('barFill').style.width='0';
+    show('end');confetti();
+    setTimeout(function(){$('barFill').style.width='100%'},60);
+    setTimeout(function(){$('uninstallText').textContent='All dating apps deleted. Forever. 💍'},2700);
+  }
+
+  function begin(){
+    var arr=guests.slice();
+    if(CONFIG.shuffle){for(var i=arr.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=arr[i];arr[i]=arr[j];arr[j]=t}}
+    deck=arr.map(function(p){return {name:p.name,age:p.age,job:p.job,bio:p.bio,green:p.green,red:p.red,photo:p.photo,real:p.real}});
+    deck.push({finale:true,name:F.name,age:F.age,job:F.job,bio:F.bio,green:F.green,red:F.red,photo:F.photo});
+    deck.forEach(function(p){if(p.photo){var im=new Image();im.src=p.photo}});
+    idx=0;likes=0;passes=0;busy=false;finished=false;counts();setToast('','');
+    show('play');render();
+  }
+
+  $('startBtn').addEventListener('click',begin);
+  $('yesBtn').addEventListener('click',function(){swipe('r')});
+  $('noBtn').addEventListener('click',function(){swipe('l')});
+  document.addEventListener('keydown',function(e){
+    if(!$('play').classList.contains('on'))return;
+    if(e.key==='ArrowRight')swipe('r');
+    if(e.key==='ArrowLeft')swipe('l');
+  });
+})();
+</script>
+</body>
+</html>
