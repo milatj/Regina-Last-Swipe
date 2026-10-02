@@ -1,4 +1,4 @@
-REGINA'S LAST SWIPE
+LAST SWIPE
 
 Files:
   index.html

@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="robots" content="noindex, nofollow">
-<title>Regina's Last Swipe</title>
+<title>Last Swipe</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
@@ -173,7 +173,6 @@ main{flex:1;display:flex;flex-direction:column;align-items:center;justify-conten
    ===================================================================== */
 var CONFIG = {
   appName: "Last Swipe",
-  brideName: "Regina",
   showReveal: true,
   shuffle: false,
 
@@ -249,7 +248,7 @@ var CONFIG = {
       real: "Gita", photo: "images/gavin.jpg" }
   ],
 
-  // The very last card: Regina's male version.
+  // The very last card.
   finale: {
     name: "Reynold", age: "38", job: "Professional Chef",
     bio: "I love kids, and I cook dinner for fun. I show up on time, call when I say I will, and remember your coffee order.",
@@ -257,8 +256,8 @@ var CONFIG = {
     reds: [],
     greens: ["Loves kids", "Cooks for you every night", "Remembers every anniversary", "Basically all green flags"],
     photo: "images/reynold.jpg",
-    // Shown next to Reynold on the final "It's a match!" screen
-    partnerName: "Rondy",
+    // Shown next to Reynold on the final "It's a match!" screen (the player, Resty)
+    partnerName: "Resty",
     partnerPhoto: "images/rondy.jpg"
   }
 };
@@ -273,14 +272,13 @@ var CONFIG = {
   var passLines=['Passed. Smart move.','Left swipe. Dodged a bullet.','Next! The standards are high.','Swiped left. Savage.','Ghosted in under a second.'];
 
   var appName=CONFIG.appName||'Last Swipe';
-  var bride=CONFIG.brideName||'';
   var F=CONFIG.finale||{};
   var guests=CONFIG.profiles||[];
 
-  document.title=bride?(bride+"'s "+appName):appName;
+  document.title=appName;
   $('appName').textContent=appName;
   $('notifApp').textContent=appName;
-  $('heroTitle').textContent=bride?(bride+"'s last swipe ever"):'Her last swipe ever';
+  $('heroTitle').textContent='Her last swipe ever';
 
   var deck=[],idx=0,likes=0,passes=0,busy=false,finished=false;
 
@@ -360,8 +358,8 @@ var CONFIG = {
     $('notif').classList.remove('show');
     $('faces').innerHTML=face(F.partnerPhoto,'👰','a')+'<div class="mid" aria-hidden="true">♥</div>'+face(F.photo,'🤵','b');
     fixBrokenImages($('faces'));
-    var a=F.partnerName||'Rondy', b=F.name||'Reynold';
-    $('endText').textContent=b+' and '+a+' are a perfect match. No more swiping, ever.';
+    var a=F.partnerName||'Resty', b=F.name||'Reynold';
+    $('endText').textContent=b+' and '+a+' are perfect for each other.';
     $('uninstallText').textContent='Deleting dating apps...';
     $('barFill').style.width='0';
     show('end');confetti();
