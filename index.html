@@ -67,6 +67,7 @@ main{flex:1;display:flex;flex-direction:column;align-items:center;justify-conten
 .flags li{font-size:clamp(13px,2vh,16px);padding:clamp(4px,.9vh,7px) 12px;border-radius:12px;border:1px solid var(--line)}
 .flags li.r{border-color:var(--pass);background:rgba(209,52,74,.08)}
 .flags li.g{border-color:var(--like);background:rgba(20,165,108,.08)}
+.tap{display:none}
 .stamp{position:absolute;top:22px;font-family:var(--display);font-weight:800;font-size:34px;border:4px solid;border-radius:12px;padding:2px 14px;opacity:0;z-index:3}
 .stamp.like{right:22px;color:var(--like);border-color:var(--like);transform:rotate(12deg);background:rgba(255,255,255,.92)}
 .stamp.nope{left:22px;color:var(--pass);border-color:var(--pass);transform:rotate(-12deg);background:rgba(255,255,255,.92)}
@@ -80,10 +81,42 @@ main{flex:1;display:flex;flex-direction:column;align-items:center;justify-conten
 .toast .l2{color:var(--accent);font-weight:700;font-size:clamp(15px,2.2vh,20px)}
 
 @media (max-width:720px){
-  .stage{width:min(440px,100%);height:clamp(520px,calc(100vh - 270px),720px)}
-  .card{grid-template-columns:1fr;grid-template-rows:46% 1fr}
-  .photo{aspect-ratio:auto;width:100%;height:100%}
+  body{font-size:16px}
+  .app{padding:10px 12px calc(12px + env(safe-area-inset-bottom,0px));min-height:100vh;min-height:100dvh}
+  header{margin-bottom:6px}
+  .logo{font-size:24px}
+  .chip{padding:4px 10px;font-size:14px}
+  .stage{width:100%;height:calc(100vh - 200px);height:calc(100dvh - 200px);min-height:400px}
+  .card{display:block}
+  .photo{position:absolute;inset:0;aspect-ratio:auto;height:100%;width:100%}
+  .photo::after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(14,3,24,.9) 0%,rgba(14,3,24,.55) 16%,rgba(14,3,24,0) 34%)}
+  .info{position:absolute;left:0;right:0;bottom:0;z-index:2;color:#fff;padding:12px 16px 14px;gap:2px;overflow:visible}
+  .name{font-size:26px;color:#fff}
+  .name span{color:rgba(255,255,255,.75)}
+  .job{font-size:14px;color:#ffb3cb}
+  .bio,.prompt,.flags{display:none}
+  .bio{color:#fff;font-size:15px}
+  .prompt small{color:rgba(255,255,255,.7);font-size:12px}
+  .prompt p{color:#fff;font-size:15px}
+  .card.open .bio,.card.open .prompt{display:block}
+  .card.open .flags{display:flex}
+  .card.open .info{background:rgba(14,3,24,.95);border-radius:22px 22px 0 0;max-height:82%;overflow-y:auto;gap:6px}
+  .flags{margin:2px 0 0;gap:5px}
+  .flags li{font-size:13px;color:#fff;background:rgba(255,255,255,.14);border-color:rgba(255,255,255,.3);padding:4px 10px}
+  .flags li.r{background:rgba(209,52,74,.4)}
+  .flags li.g{background:rgba(20,165,108,.4)}
+  .tap{display:block;position:absolute;top:12px;left:50%;transform:translateX(-50%);z-index:2;background:rgba(0,0,0,.5);color:#fff;font-size:12px;padding:4px 12px;border-radius:999px;white-space:nowrap}
+  .card.open .tap{display:none}
+  .stamp{z-index:4;top:46px}
+  .toast{min-height:40px;margin-top:6px}
+  .toast .l1{font-size:16px}
+  .toast .l2{font-size:14px}
+  .actions{margin-top:8px;gap:26px}
+  .round{width:64px;font-size:30px}
+  .round.y{width:76px;font-size:36px}
+  .hint{display:none}
 }
+
 
 /* fake notification */
 .notif{position:fixed;left:50%;top:14px;transform:translate(-50%,-160%);width:min(520px,calc(100% - 24px));z-index:60;background:var(--card);border:1px solid var(--line);border-radius:22px;box-shadow:var(--shadow);padding:14px 16px;display:flex;gap:14px;align-items:center;transition:transform .5s cubic-bezier(.2,.9,.3,1.2)}
@@ -217,21 +250,21 @@ var CONFIG = {
       ask: "A shower thought I had recently", answer: "Should I post this shirtless, or shirtless with a towel?",
       reds: ["Topless selfie every single day", "Still unsure what he wants to do with his life", "Will count your macros on the first date"],
       greens: ["Very health conscious"],
-      real: "Mila", photo: "images/marko.jpg" },
+      real: "Mila", photo: "images/marko.jpg", focus: "center 35%" },
 
     { name: "Patrick", age: "36", job: "Works at KPMG (Kantor Papi Mami Gue)",
       bio: "I work at my parents' office, which means I do not really work. Looking for a girl who can start a family soon. A son, specifically.",
       ask: "Marriage to me means", answer: "A son in year one. Mom already picked the name.",
       reds: ["Does not work and has no plans to", "Needs a son immediately", "Parents approve every outfit, every sentence, and your zodiac"],
       greens: ["Dinner is always on his parents"],
-      real: "Patricia", photo: "images/patrick.jpg" },
+      real: "Patricia", photo: "images/patrick.jpg", focus: "center 55%" },
 
     { name: "Fredy", age: "38", job: "Yoga Instructor",
       bio: "Vegetarian, Buddhist, and at peace with having no plan. My yoga mat is my office. Rent is a state of mind.",
       ask: "Together we could", answer: "Meditate on why we have no savings. Then fly to Bali.",
       reds: ["Zero ambition", "Disappears to Bali every single month", "Calls unpaid bills 'attachment'"],
       greens: ["Never raises his voice"],
-      real: "Frisca", photo: "images/fredy.jpg" },
+      real: "Frisca", photo: "images/fredy.jpg", focus: "center 35%" },
 
     { name: "Samuel", age: "37", job: "AI Data Center Specialist",
       bio: "Big nerd. Huge introvert. My friends are in my games. I have 400 hours on one save file.",
@@ -289,11 +322,11 @@ var CONFIG = {
   }
 
   function cardHTML(p){
-    var photo=p.photo?'<img src="'+esc(p.photo)+'" alt="" data-fallback="1">':'<span aria-hidden="true">🙂</span>';
+    var photo=p.photo?'<img src="'+esc(p.photo)+'" alt="" data-fallback="1" style="object-position:'+esc(p.focus||'center 15%')+'">':'<span aria-hidden="true">🙂</span>';
     var flags='';
     (p.reds||[]).forEach(function(t){flags+='<li class="r">🚩 '+esc(t)+'</li>'});
     (p.greens||[]).forEach(function(t){flags+='<li class="g">🟢 '+esc(t)+'</li>'});
-    return '<div class="photo">'+photo+'</div>'+
+    return '<div class="photo">'+photo+'</div><div class="tap">Tap for full profile</div>'+
       '<div class="stamp like">LIKE</div><div class="stamp nope">NOPE</div>'+
       '<div class="info"><h2 class="name">'+esc(p.name)+(p.age?' <span>'+esc(p.age)+'</span>':'')+'</h2>'+
       (p.job?'<p class="job">'+esc(p.job)+'</p>':'')+(p.bio?'<p class="bio">'+esc(p.bio)+'</p>':'')+
@@ -307,7 +340,7 @@ var CONFIG = {
   function render(){
     var stage=$('stage');stage.innerHTML='';
     if(deck[idx+1]){var b=document.createElement('div');b.className='card behind';b.innerHTML=cardHTML(deck[idx+1]);stage.appendChild(b);fixBrokenImages(b)}
-    var t=document.createElement('div');t.className='card top';t.id='topCard';t.innerHTML=cardHTML(deck[idx]);stage.appendChild(t);fixBrokenImages(t);
+    var t=document.createElement('div');t.className='card top';t.id='topCard';t.innerHTML=cardHTML(deck[idx]);stage.appendChild(t);fixBrokenImages(t);t.addEventListener('click',function(){t.classList.toggle('open')});
   }
   function setToast(l1,l2){$('toast').innerHTML='<div class="l1">'+esc(l1||'')+'</div>'+(l2?'<div class="l2">'+esc(l2)+'</div>':'')}
   function counts(){$('likeCount').textContent='♥ '+likes;$('passCount').textContent='✕ '+passes}
@@ -371,7 +404,7 @@ var CONFIG = {
     var arr=guests.slice();
     if(CONFIG.shuffle){for(var i=arr.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=arr[i];arr[i]=arr[j];arr[j]=t}}
     deck=arr.slice();
-    deck.push({finale:true,name:F.name,age:F.age,job:F.job,bio:F.bio,ask:F.ask,answer:F.answer,reds:F.reds,greens:F.greens,photo:F.photo});
+    deck.push({finale:true,name:F.name,age:F.age,job:F.job,bio:F.bio,ask:F.ask,answer:F.answer,reds:F.reds,greens:F.greens,photo:F.photo,focus:F.focus});
     deck.forEach(function(p){if(p.photo){var im=new Image();im.src=p.photo}});
     if(F.partnerPhoto){var pi=new Image();pi.src=F.partnerPhoto}
     idx=0;likes=0;passes=0;busy=false;finished=false;counts();setToast('','');
